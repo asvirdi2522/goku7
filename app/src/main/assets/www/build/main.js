@@ -94,11 +94,23 @@ var HomePage = /** @class */ (function () {
             console.log(e);
         });
     };
+    HomePage.prototype.getGallery = function () {
+        var _this = this;
+        this.camera.getPicture({
+            sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+            destinationType: this.camera.DestinationType.DATA_URL
+        }).then(function (res) {
+            _this.imgURL = 'data:image/jpeg;base64,' + res;
+        }).catch(function (e) {
+            console.log(e);
+        });
+    };
     HomePage.prototype.getImage = function () {
         var _this = this;
         var options = {
             quality: 100,
-            destinationType: this.camera.DestinationType.FILE_URI,
+            destinationType: this.camera.DestinationType.DATA_URL,
+            /*destinationType: this.camera.DestinationType.FILE_URI,*/
             sourceType: this.camera.PictureSourceType.PHOTOLIBRARY
         };
         this.camera.getPicture(options).then(function (imageData) {
@@ -117,11 +129,12 @@ var HomePage = /** @class */ (function () {
         var fileTransfer = this.transfer.create();
         var options = {
             fileKey: 'ionicfile',
-            fileName: 'ionicfile',
+            fileName: Math.floor(Date.now() / 1000) + ".png",
             chunkedMode: false,
             mimeType: "image/jpeg",
             headers: {}
         };
+        alert(options.fileName);
         /*fileTransfer.upload(this.imageURI, 'http://192.168.0.7:8080/api/uploadImage', options)*/
         fileTransfer.upload(this.imageURI, 'http://54.92.182.121:3000/upload', options)
             .then(function (data) {
@@ -149,7 +162,7 @@ var HomePage = /** @class */ (function () {
     };
     HomePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-home',template:/*ion-inline-start:"C:\Ionic\ionic-file-upload\src\pages\home\home.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>\n      Ionic Blank\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n  <ion-item>\n    <p>{{imageURI}}</p>\n    <!--<img src="{{imgURL}}" height="200" width="200">\n    <img src="{{imageURI}}" height="200" width="200">-->\n    <button ion-button color="secondary" (click)="opencamera()">Open Camera</button>\n    <button ion-button color="secondary" (click)="getImage()">Get Image</button>\n  </ion-item>\n  <ion-item>\n    <h4>Image Preview</h4>\n    <img src="{{imageFileName}}" *ngIf="imageFileName" alt="Ionic File" width="300" />\n  </ion-item>\n  <ion-item>\n    <button ion-button (click)="uploadFile()">Upload</button>\n  </ion-item>\n</ion-content>\n'/*ion-inline-end:"C:\Ionic\ionic-file-upload\src\pages\home\home.html"*/
+            selector: 'page-home',template:/*ion-inline-start:"C:\Ionic\ionic-file-upload\src\pages\home\home.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>\n      Ionic Blank\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n  <ion-item>\n    <p>{{imageURI}}</p>\n    <img src="{{imgURL}}" height="200" width="200">\n    <!--<img src="{{imageURI}}" height="200" width="200">-->\n    <button ion-button color="secondary" (click)="opencamera()">Open Camera</button>\n    <button ion-button color="secondary" (click)="getImage()">Get Image</button>\n  </ion-item>\n  <ion-item>\n    <h4>Image Preview</h4>\n    <img src="{{imageFileName}}" *ngIf="imageFileName" alt="Ionic File" width="300" />\n  </ion-item>\n  <ion-item>\n    <button ion-button (click)="uploadFile()">Upload</button>\n  </ion-item>\n</ion-content>\n'/*ion-inline-end:"C:\Ionic\ionic-file-upload\src\pages\home\home.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_2__ionic_native_file_transfer__["a" /* FileTransfer */],
